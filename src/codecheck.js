@@ -11,7 +11,11 @@ function markdownTest(answers) {
   return new MarkdownTest(answers);
 }
 function consoleApp(cmd, cwd) {
-  return new ConsoleApp(cmd, cwd);
+  var app = new ConsoleApp(cmd, cwd);
+  app.consoleOut(true);
+  app.storeStdout(true);
+  app.storeStderr(true);
+  return app;
 }
 
 module.exports = {

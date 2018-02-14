@@ -2,10 +2,10 @@
 
 var fs            = require("fs");
 var mkdirp        = require("mkdirp");
-var request       = require("request");
 var moment        = require("moment");
 var Promise       = require("bluebird");
 var CommandResult = require("../../cli/commandResult");
+var FileResolver  = require("../../utils/fileResolver");
 
 function CloneChallengeCommand(api) {
   this.api = api;
@@ -64,56 +64,7 @@ CloneChallengeCommand.prototype.saveSettings = function(dirname, challengeId, re
 };
 
 CloneChallengeCommand.prototype.doCloneChallenge = function(dirname, files) {
-  function getParentDirectory(filename) {
-    var array = filename.split("/");
-    array.pop();
-    return array.join("/");
-  }
-  var self = this;
-  return new Promise(function(resolve) {
-    var tasks = [];
-    Object.keys(files).sort().forEach(function(filename) {
-      var url = files[filename];
-      var fullpath = filename;
-      if (dirname) {
-        fullpath = dirname + "/" + fullpath;
-      }
-      tasks.push(new Promise(function(resolve) {
-        mkdirp(getParentDirectory(fullpath), function(err) {
-          if (err) {
-            console.error("Can not create directory: " + getParentDirectory(fullpath));
-            resolve(err);
-          } else {
-            self.download(fullpath, url, resolve);
-          }
-        });
-      }));
-    });
-    Promise.all(tasks).then(resolve);
-  });
-};
-
-CloneChallengeCommand.prototype.download = function(filename, url, resolve) {
-  var result = null;
-  request(url)
-    .on('response', function(response) {
-      result = {
-        status: response.statusCode,
-        filename: filename
-      };
-    })
-    .on("end", function() {
-      if (result) {
-        var prefix = result.status === 200 ? "Success" : "Fail";
-        console.log(prefix + " download: " + result.status + ", " + filename);
-        resolve(result);
-      }
-    })
-    .on("error", function(err) {
-      console.error("Fail download: " + filename + ", " + err);
-      resolve(err);
-    })
-    .pipe(fs.createWriteStream(filename));
+  return new FileResolver(dirname).generate(files);
 };
 
 module.exports = CloneChallengeCommand;

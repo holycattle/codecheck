@@ -36,10 +36,10 @@ CloneCommand.prototype.checkArgs = function(args) {
 };
 
 CloneCommand.prototype.run = function(args, options) {
-  this.checkArgs(args);
-
-  var self = this;
-  return new Promise(function(resolve){
+  function isNeedSignin() {
+    return options.exam || options.user;
+  }
+  function withSignIn(resolve) {
     new SigninCommand(self.api).run(null, options).then(
       function() {
         if (options.exam) {
@@ -52,6 +52,24 @@ CloneCommand.prototype.run = function(args, options) {
         resolve(new CommandResult(false, "Fail signin"));
       }
     );
+  }
+  this.checkArgs(args);
+
+  var self = this;
+  return new Promise(function(resolve){
+    if (isNeedSignin()) {
+      withSignIn(resolve);
+    } else {
+      new CloneChallengeCommand(self.api).run(args, options).then(
+        function(result) {
+          if (result.succeed) {
+            resolve(result);
+          } else {
+            withSignIn(resolve);
+          }
+        }
+      );
+    }
   });
 };
 

@@ -8,7 +8,8 @@ function convertShortOption(str) {
     "-e": "exam",
     "-p": "password",
     "-u": "user",
-    "-h": "host"
+    "-h": "host",
+    "-a": "all"
   };
   return options[str];
 }

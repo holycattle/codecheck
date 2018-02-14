@@ -75,7 +75,7 @@ It has following sub keys.
 - timeout: Timeout to wait finishing all tests.
 
 ## Work with code-check.io
-Also, codecheck is a command line client of [code-check.io](https://codecheck.io)
+Also, codecheck is a command line client of [code-check.io](https://code-check.io)
 
 If you are the user of code-check, you can download its challenge result like git.
 

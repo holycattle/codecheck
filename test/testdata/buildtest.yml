@@ -1,0 +1,5 @@
+build:
+  - npm install --production
+  - babel es6/src --out-dir target
+  - babel es6/test --out-dir test
+test: mocha --harmony --timeout 600000

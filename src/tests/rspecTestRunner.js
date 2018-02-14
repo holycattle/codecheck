@@ -8,7 +8,7 @@ var TestRunner = require("./testRunner");
  */
 function RSpecTestRunner(args, cwd) {
   function onStdout(data) {
-    var regex = /(\d+) examples, (\d+) failures/;
+    var regex = /(\d+) examples?, (\d+) failures?/;
     var match = data.match(regex);
     if (match) {
       self.failureCount = parseInt(match[2]);

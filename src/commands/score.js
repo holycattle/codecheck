@@ -5,7 +5,7 @@ var mkdirp        = require("mkdirp");
 var CommandResult = require("../cli/commandResult");
 
 var RunCommand               = require("./run");
-var CloneChallengeCommand    = require("./internal/cloneChallenge");
+var FileResolver             = require("../utils/fileResolver");
 
 function ScoreCommand(api) {
   this.api = api;
@@ -54,9 +54,8 @@ ScoreCommand.prototype.run = function(args) {
 };
 
 ScoreCommand.prototype.doScore = function(dirname, json, resolve) {
-  var self = this;
-  new CloneChallengeCommand(self.api).doCloneChallenge(dirname, json.files).then(function() {
-    new RunCommand().run([dirname]).then(function(result) {
+  new FileResolver(dirname).generate(json.files).then(function() {
+    new RunCommand().withEnv(json.envvars).run([dirname]).then(function(result) {
       resolve(result);
     });
   });

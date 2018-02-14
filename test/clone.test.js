@@ -94,12 +94,11 @@ describe("Clone exam", function() {
   this.timeout(5000);
 
   var api = new API(config.host);
-  var examId, resultId, challengeId;
+  var examId, resultId;
 
   before(function(done) {
     initData(function(data) {
       examId = data.exams[0].id;
-      challengeId = data.challenges[0].id;
       resultId = data.challenge_results[0].id;
       done();
     });

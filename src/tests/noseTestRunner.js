@@ -12,7 +12,7 @@ var TestRunner = require("./testRunner");
  * nosetests outputs following line at end of test
  * Ran 22 tests in 0.011s
  */
-function NoseTestRunner(args, cwd) {
+function NoseTestRunner(args, cwd, cmd) {
   function prevIsSep() {
     return prev.indexOf("=====") === 0;
   }
@@ -22,7 +22,7 @@ function NoseTestRunner(args, cwd) {
       prev = data;
       return;
     }
-    var regex = /Ran (\d+) tests in/;
+    var regex = /Ran (\d+) tests? in/;
     var match = data.match(regex);
     if (match) {
       var allCount = parseInt(match[1]);
@@ -34,7 +34,7 @@ function NoseTestRunner(args, cwd) {
   var self = this;
   var prev = "";
   this.init();
-  this.cmd = "nosetests";
+  this.cmd = cmd || "nosetests";
   this.args = args;
   this.cwd = cwd;
 

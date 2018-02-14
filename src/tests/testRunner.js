@@ -27,14 +27,16 @@ TestRunner.prototype.getExecuteCount = function() {
 
 TestRunner.prototype.doClose = function(code) {
   if (this._consoleOut) {
-    process.stdout.write("codecheck: Finish with code " + code + "\n");
+    process.stdout.write("\ncodecheck: Finish with code " + code + "\n");
     process.stdout.write("codecheck: tests  : " + this.getExecuteCount() + "\n");
     process.stdout.write("codecheck: success: " + this.getSuccessCount() + "\n");
     process.stdout.write("codecheck: failure: " + this.getFailureCount() + "\n");
   }
 };
 
+/*eslint no-unused-vars: 0*/
 TestRunner.prototype.configure = function(yaml) {
+  //Will be overrided by subclass
 };
 
 

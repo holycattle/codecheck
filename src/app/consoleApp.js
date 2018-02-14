@@ -2,6 +2,7 @@
 
 var AbstractApp      = require("./abstractApp");
 var CommandResult    = require("../cli/commandResult");
+var CodecheckResult  = require("../utils/codecheckResult");
 
 function ConsoleApp(cmd, cwd) {
   this.init();
@@ -28,12 +29,6 @@ ConsoleApp.prototype.expected = function() {
   }
   this._expected = this._expected.concat(this.normalizeArgs(arguments));
   return this;
-};
-
-ConsoleApp.prototype.doClose = function(code) {
-  if (this._consoleOut) {
-    process.stdout.write("codecheck: Finish '" + this.getCommandLine() + " with code " + code + "\n");
-  }
 };
 
 ConsoleApp.prototype.doRun = function(process) {
@@ -80,6 +75,13 @@ ConsoleApp.prototype.runAndVerify = function(additionalArgs, done) {
     }
   });
   this.run(additionalArgs);
+};
+
+ConsoleApp.prototype.codecheck = function() {
+  return this.run.apply(this, arguments).spread(function(code, stdout, stderr) {
+    console.log("" /* to avoid code printed as `xxok ~~~`; code will fail on detecting test cases */);
+    return new CodecheckResult(code, stdout, stderr);
+  });
 };
 
 module.exports = ConsoleApp;

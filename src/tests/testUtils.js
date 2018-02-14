@@ -49,6 +49,12 @@ function createTestRunner(name, args, cwd) {
       return new RSpecTestRunner(args, cwd);
     case "nosetests":
       return new NoseTestRunner(args, cwd);
+    case "python":
+    case "python3":
+      if (args.length >= 2 && args[0] === "-m" && args[1] === "nose") {
+        return new NoseTestRunner(args, cwd, name);
+      }
+      break;
     case "cabal":
       return new CabalTestRunner(args, cwd);
     case "phpunit":
@@ -62,13 +68,13 @@ function createTestRunner(name, args, cwd) {
     case "nunit-console":
       return new NUnitTestRunner(args, cwd);
     default:
-      var cmd = [name].concat(args).join(" ");
-      var runner = new TestRunner(cmd, cwd);
-      runner.onStdout(function(data) {
-        commonTestCounter(runner, data);
-      });
-      return runner;
   }
+  var runner = new TestRunner(name, cwd);
+  runner.args = args;
+  runner.onStdout(function(data) {
+    commonTestCounter(runner, data);
+  });
+  return runner;
 }
 
 function commonTestCounter(runner, data) {
@@ -84,7 +90,40 @@ function commonTestCounter(runner, data) {
     }
     return false;
   }
-  rubyTestUnit();
+  function tap() {
+    function isOk() {
+      return array.length > 0 && array[0] === "ok";
+    }
+    function isNotOk() {
+      return array.length > 1 && array[0] === "not" && array[1] === "ok";
+    }
+    var ret = true;
+    var array = data.split(" ");
+    if (isOk()) {
+      runner.successCount++;
+    } else if (isNotOk()) {
+      runner.failureCount++;
+    } else {
+      ret = false;
+    }
+    return ret;
+  }
+  var funcMap = {
+    "ruby-test-unit": rubyTestUnit,
+    "tap": tap
+  };
+  if (runner.mode) {
+    funcMap[runner.mode]();
+    return;
+  }
+  var keys = Object.keys(funcMap);
+  for (var i=0; i<keys.length; i++) {
+    var key = keys[i];
+    if (funcMap[key]()) {
+      runner.mode = key;
+      return;
+    }
+  }
 }
 
 module.exports = {

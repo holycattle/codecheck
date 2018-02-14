@@ -1,7 +1,7 @@
 "use strict";
 
-var path       = require("path");
 var TestRunner = require("./testRunner");
+var shellQuote = require("../utils/myQuote");
 
 /**
  * nunit-console outputs following line at end of test
@@ -41,7 +41,7 @@ NUnitTestRunner.prototype.configure = function(yaml) {
     return cmd.trim().indexOf("mcs ") === 0;
   }
   function addMonoPath(cmd) {
-    var ret = cmd.split(" ");
+    var ret = shellQuote.parse(cmd);
     var added = false;
     for (var i=0; i<ret.length; i++) {
       if (ret[i].indexOf("-lib:") === 0) {
@@ -55,7 +55,7 @@ NUnitTestRunner.prototype.configure = function(yaml) {
       ret.unshift("-lib:" + monoPath);
       ret.unshift(first);
     }
-    return ret.join(" ");
+    return shellQuote.quote(ret);
   }
   var monoPath = process.env.MONO_PATH;
   if (!monoPath) {

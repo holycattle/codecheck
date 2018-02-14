@@ -26,9 +26,18 @@ WebApp.prototype.testUrl = function() {
       return this._testUrl;
     }
     var port = this.port === 80 ? "" : ":" + this.port;
-    return "http://localhost" + port + this._testPath;
+    return "http://localhost" + port + this.testPath();
   } else {
     this._testUrl = arguments[0];
+    return this;
+  }
+};
+
+WebApp.prototype.testPath = function() {
+  if (arguments.length === 0) {
+    return this._testPath;
+  } else {
+    this._testPath = arguments[0];
     return this;
   }
 };

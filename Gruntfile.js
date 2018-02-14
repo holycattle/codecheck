@@ -8,16 +8,27 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: ['src/{,**/}*.js', 'test/{,**/}*.js'],
-        tasks: ['jshint']
+        tasks: ['eslint']
       }
     },
-    jshint : {
-      options: {
-        jshintrc: true
+    eslint: {
+      src: {
+        options: {
+          envs: ["node", "es6"]
+        },
+        files: {
+          src: ['src/{,**/}*.js']
+        }
       },
-      src: ['src/{,**/}*.js'],
-      test: ['test/{,**/}*.js ']
-    }
+      test: {
+        options: {
+          envs: ["node", "es6", "mocha"]
+        },
+        files: {
+          src: ['test/{,**/}*.js']
+        }
+      }
+    },
   };
 
   grunt.initConfig(config);

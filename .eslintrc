@@ -1,0 +1,40 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "semi": 2,
+    "no-console": 0,
+    "comma-dangle": 0,
+    "eqeqeq": 2,
+//    "no-else-return": 2,
+    "no-eq-null": 2,
+    "no-extra-label": 2,
+    "no-floating-decimal": 2,
+    "no-implied-eval": 2,
+    "no-multi-str": 2,
+    "no-new": 2,
+    "no-new-func": 2,
+    "no-redeclare": 2,
+    "no-return-assign": 2,
+    "no-script-url": 2,
+    "no-self-assign": 2,
+    "no-self-compare": 2,
+    "no-sequences": 2,
+    "no-unmodified-loop-condition": 2,
+    "no-unused-labels": 2,
+    "no-useless-escape": 2,
+    "no-void": 2,
+    "no-with": 2,
+    "wrap-iife": 2,
+    "no-label-var": 2
+  }
+}

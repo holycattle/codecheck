@@ -1,0 +1,6 @@
+test: scala infinite.scala
+cpu:
+  limit: 90
+  frequency: 5
+  interval: 1000
+  debug: true
