@@ -8,14 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import name.fraser.neil.plaintext.diff_match_patch.Diff;
 import name.fraser.neil.plaintext.diff_match_patch.Operation;
-
 import OT;
 /**
  * This class represents a single operation that the user makes to a document. This class contains all the core logic of Operational transformation
  * like Transform, compose etc.
- * 
  * @author manoj-3097
- *
  */
 public class OT {
 	private static final Logger LOGGER = Logger.getLogger(OT.class.getName());
@@ -54,7 +51,6 @@ public class OT {
 
 	/**
 	 * Convert an Operation to JSONObject
-	 * 
 	 * @return
 	 * @throws JSONException
 	 */
@@ -159,7 +155,6 @@ public class OT {
 	/**
 	 * Compose an operation with the next consecutive operation and return a single operation, This should preserve the changes of both. Or, in other
 	 * words, for each input string S and a pair of consecutive operations A and B, apply(apply(S, A), B) = apply(S, compose(A, B)) must hold.
-	 * 
 	 * @param operation2
 	 * @return
 	 * @throws JSONException
@@ -269,7 +264,7 @@ public class OT {
 
 	/**
 	 * Transform an operation over another operation occurred concurrently at the same point of time. This function has the main logic of OT.
-	 * 
+	 * test content
 	 * @param operation1
 	 * @param operation2
 	 * @return
